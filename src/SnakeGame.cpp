@@ -7,9 +7,9 @@ SnakeGame::SnakeGame()
 
 void SnakeGame::setup()
 {
-    m_display.setup();
+    Display::instance().setup();
 
-    m_gameState = new MainMenuState(m_display);
+    m_gameState = new MainMenuState();
 }
 
 void SnakeGame::run()
@@ -19,8 +19,8 @@ void SnakeGame::run()
     if (m_gameState->shouldChange())
         changeState();
 
-    m_display.display();
-    delay(800);
+    Display::instance().display();
+    delay(FRAME_DELAY);
 }
 
 void SnakeGame::changeState()

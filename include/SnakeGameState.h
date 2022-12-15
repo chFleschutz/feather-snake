@@ -8,7 +8,7 @@
 class SnakeGameState
 {
 public:
-    SnakeGameState(Display& display);
+    SnakeGameState();
 
     bool shouldChange();
 
@@ -18,8 +18,6 @@ public:
 protected:
     void changeState();
 
-    Display& m_display;
-
 private:
     bool m_shouldChange = false;
 };
@@ -28,7 +26,7 @@ private:
 class MainMenuState : public SnakeGameState
 {
 public:
-    MainMenuState(Display& display);
+    MainMenuState();
 
 	void update() override;
 	SnakeGameState* transitionToNextState() override;
@@ -38,7 +36,7 @@ public:
 class GameLoopState : public SnakeGameState
 {
 public:
-    GameLoopState(Display& display);
+    GameLoopState();
 
 	void update() override;
 	SnakeGameState* transitionToNextState() override;
@@ -51,7 +49,7 @@ private:
 class GameOverState : public SnakeGameState
 {
 public: 
-    GameOverState(Display& display);
+    GameOverState();
 
 	void update() override;
 	SnakeGameState* transitionToNextState() override;

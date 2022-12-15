@@ -64,7 +64,7 @@ Snake::Snake(int xPos, int yPos)
     m_head = new SnakeBody(m_tail, m_forward);
 }
 
-void Snake::move(Display &display)
+void Snake::move()
 {
     Serial.println("Moving Snake");
 
@@ -73,14 +73,16 @@ void Snake::move(Display &display)
     m_head = newHead;
 
     auto headPos = m_head->position();
-    display.drawPixel(headPos);
+    Display::instance().drawPixel(headPos);
+    // display.drawPixel(headPos);
     Serial.print("    Head Pos: "); 
     Serial.print(headPos.x());
     Serial.print(" ");
     Serial.print(headPos.y());
 
     auto tailPos = m_tail->position();
-    display.drawPixel(tailPos, SH110X_BLACK);
+    Display::instance().drawPixel(tailPos, SH110X_BLACK);
+    // display.drawPixel(tailPos, SH110X_BLACK);
     Serial.print("    Tail Pos: "); 
     Serial.print(tailPos.x());
     Serial.print(" ");

@@ -14,5 +14,4 @@ private:
     void changeState();
 
     SnakeGameState* m_gameState;
-    Display m_display;
 };

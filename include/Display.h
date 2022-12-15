@@ -10,7 +10,10 @@
 class Display
 {
 public:
-    Display();
+    Display(const Display&) = delete;
+    void operator=(const Display&) = delete;
+
+    static Display& instance();
 
     void setup();
 
@@ -22,6 +25,8 @@ public:
     void clear();
 
 private:
+    Display();
+
     Adafruit_SH1107 m_display;
 };
 

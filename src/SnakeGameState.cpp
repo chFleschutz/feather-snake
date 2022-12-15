@@ -1,8 +1,7 @@
 #include "SnakeGameState.h"
 #include "Arduino.h"
 
-SnakeGameState::SnakeGameState(Display &display)
-	: m_display(display)
+SnakeGameState::SnakeGameState()
 {
 }
 
@@ -18,11 +17,13 @@ void SnakeGameState::changeState()
 
 // MainMenuState ==================================================================
 
-MainMenuState::MainMenuState(Display &display) : SnakeGameState(display)
+MainMenuState::MainMenuState() 
 {
-	m_display.clear();
-	m_display.print("Main Menu", 0, 0, 2);
-	m_display.display();
+	// m_display.clear();
+	// m_display.print("Main Menu", 0, 0, 2);
+	// m_display.display();
+	Display::instance().clear();
+	Display::instance().print("Main Menu", 0, 0, 2);
 }
 
 void MainMenuState::update()
@@ -33,16 +34,15 @@ void MainMenuState::update()
 
 SnakeGameState *MainMenuState::transitionToNextState()
 {
-	return new GameLoopState(m_display);
+	return new GameLoopState();
 }
 
 // GameLoopState ==================================================================
 
-GameLoopState::GameLoopState(Display &display)
-	: SnakeGameState(display),
-	  m_snake(20, 20)
+GameLoopState::GameLoopState()
+	 : m_snake(20, 20)
 {
-	m_display.clear();
+	Display::instance().clear();
 }
 
 void GameLoopState::update()
@@ -52,7 +52,7 @@ void GameLoopState::update()
 	if (!digitalRead(BUTTON_C))
 		m_snake.turnRight();
 
-	m_snake.move(m_display);
+	m_snake.move();
 
 	if (m_snake.hasCrashed())
 		changeState();
@@ -60,15 +60,17 @@ void GameLoopState::update()
 
 SnakeGameState *GameLoopState::transitionToNextState()
 {
-	return new GameOverState(m_display);
+	return new GameOverState();
 }
 
 // GameOverState ==================================================================
 
-GameOverState::GameOverState(Display &display) : SnakeGameState(display)
+GameOverState::GameOverState()
 {
-	m_display.print("Game Over", 0, 0, 2);
-	m_display.display();
+	// m_display.print("Game Over", 0, 0, 2);
+	// m_display.display();
+	Display::instance().print("Game Over", 0, 0, 2);
+	Display::instance().display();
 }
 
 void GameOverState::update()
@@ -79,5 +81,5 @@ void GameOverState::update()
 
 SnakeGameState *GameOverState::transitionToNextState()
 {
-	return new MainMenuState(m_display);
+	return new MainMenuState();
 }

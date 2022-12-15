@@ -1,8 +1,9 @@
 #include "Display.h"
 
-Display::Display()
-    : m_display(DISPLAY_WIDTH, DISPLAY_HEIGHT, &Wire)
+Display& Display::instance()
 {
+	static Display instance;
+	return instance;
 }
 
 void Display::setup()
@@ -46,4 +47,8 @@ void Display::clear()
 {
 	m_display.clearDisplay();
 }
-    
+
+Display::Display()
+    : m_display(DISPLAY_WIDTH, DISPLAY_HEIGHT, &Wire)
+{
+}

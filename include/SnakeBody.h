@@ -22,7 +22,7 @@ class Snake
 public:
     Snake(int xPos, int yPos);
 
-    void move(Display& display);
+    void move();
     void turnLeft();
     void turnRight();
     bool hasCrashed();
