@@ -14,10 +14,8 @@ void Display::setup()
 	delay(1000);
 	m_display.clearDisplay();
 	m_display.display();
-    m_display.setTextSize(2);
 	m_display.setTextColor(SH110X_WHITE);
-	m_display.setCursor(0, 0);
-	m_display.setRotation(1);
+	m_display.setRotation(2);
 }
 
 void Display::print(const char* text)
@@ -38,6 +36,11 @@ void Display::drawPixel(const Vector2& position, int color)
 	m_display.drawPixel(position.x(), position.y(), color);
 }
 
+void Display::drawBox(const Vector2& position, int width, int height, int color)
+{
+	m_display.drawRect(position.x(), position.y(), width, height, color);
+}
+
 void Display::display()
 {
 	m_display.display();
@@ -47,6 +50,12 @@ void Display::clear()
 {
 	m_display.clearDisplay();
 }
+
+bool Display::isPixelDrawn(const Vector2& position)
+{
+	return m_display.getPixel(position.x(), position.y());
+}
+
 
 Display::Display()
     : m_display(DISPLAY_WIDTH, DISPLAY_HEIGHT, &Wire)

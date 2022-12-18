@@ -28,6 +28,8 @@ public:
     bool hasCrashed();
 
 private:
+    void checkHeadCollision();
+
     bool m_crashed = false;
     int m_snakeSize = 0;
     Vector2 m_forward;

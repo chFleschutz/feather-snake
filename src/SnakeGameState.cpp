@@ -19,16 +19,13 @@ void SnakeGameState::changeState()
 
 MainMenuState::MainMenuState() 
 {
-	// m_display.clear();
-	// m_display.print("Main Menu", 0, 0, 2);
-	// m_display.display();
 	Display::instance().clear();
-	Display::instance().print("Main Menu", 0, 0, 2);
+	Display::instance().print("Main Menu", 2, 2, 2);
 }
 
 void MainMenuState::update()
 {
-	if (!digitalRead(BUTTON_A))
+	if (!digitalRead(BUTTON_A) || !digitalRead(BUTTON_B) || !digitalRead(BUTTON_C))
 		changeState();
 }
 
@@ -43,14 +40,18 @@ GameLoopState::GameLoopState()
 	 : m_snake(20, 20)
 {
 	Display::instance().clear();
+	Display::instance().drawBox(Vector2(0, 0), DISPLAY_WIDTH, DISPLAY_HEIGHT);
 }
 
 void GameLoopState::update()
 {
+	if (!digitalRead(BUTTON_B))
+		changeState();
+
 	if (!digitalRead(BUTTON_A))
-		m_snake.turnLeft();
-	if (!digitalRead(BUTTON_C))
 		m_snake.turnRight();
+	if (!digitalRead(BUTTON_C))
+		m_snake.turnLeft();
 
 	m_snake.move();
 
@@ -67,9 +68,7 @@ SnakeGameState *GameLoopState::transitionToNextState()
 
 GameOverState::GameOverState()
 {
-	// m_display.print("Game Over", 0, 0, 2);
-	// m_display.display();
-	Display::instance().print("Game Over", 0, 0, 2);
+	Display::instance().print("Game Over", 2, 2, 2);
 	Display::instance().display();
 }
 

@@ -20,6 +20,7 @@ public:
     void print(const char* text);
     void print(const char* text, int x, int y, int size = 1);
     void drawPixel(const Vector2& position, int color = SH110X_WHITE);
+    void drawBox(const Vector2& position, int width, int height, int color = SH110X_WHITE);
     
     void display();
     void clear();

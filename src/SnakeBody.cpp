@@ -66,29 +66,18 @@ Snake::Snake(int xPos, int yPos)
 
 void Snake::move()
 {
-    Serial.println("Moving Snake");
-
-    // New Head
+    // New head
     auto newHead = new SnakeBody(m_head, m_forward);
     m_head = newHead;
 
-    auto headPos = m_head->position();
-    Display::instance().drawPixel(headPos);
-    // display.drawPixel(headPos);
-    Serial.print("    Head Pos: "); 
-    Serial.print(headPos.x());
-    Serial.print(" ");
-    Serial.print(headPos.y());
+    // Check for game over
+    checkHeadCollision();
 
-    auto tailPos = m_tail->position();
-    Display::instance().drawPixel(tailPos, SH110X_BLACK);
-    // display.drawPixel(tailPos, SH110X_BLACK);
-    Serial.print("    Tail Pos: "); 
-    Serial.print(tailPos.x());
-    Serial.print(" ");
-    Serial.println(tailPos.y());
+    // Update pixels
+    Display::instance().drawPixel(m_head->position());
+    Display::instance().drawPixel(m_tail->position(), SH110X_BLACK);
 
-    // Delete Tail
+    // Delete tail
     auto newTail = m_tail->next();
     delete m_tail;
     m_tail = newTail;
@@ -107,4 +96,21 @@ void Snake::turnRight()
 bool Snake::hasCrashed()
 {
     return m_crashed;
+}
+
+void Snake::checkHeadCollision()
+{
+    auto headPos = m_head->position();
+    // Check for out of bounds
+    if (headPos.x() < 0 || headPos.x() > DISPLAY_WIDTH || headPos.y() < 0 || headPos.y() > DISPLAY_HEIGHT)
+    {
+        m_crashed = true;    
+        return;
+    }
+    // Check for snake collision
+    if (Display::instance().isPixelDrawn(headPos))
+    {
+        m_crashed = true;
+        return;
+    }
 }
