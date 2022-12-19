@@ -25,6 +25,8 @@ public:
     void display();
     void clear();
 
+    bool isPixelDrawn(const Vector2& position);
+
 private:
     Display();
 

@@ -21,6 +21,7 @@ class Snake
 {
 public:
     Snake(int xPos, int yPos);
+    ~Snake();
 
     void move();
     void turnLeft();
