@@ -65,6 +65,17 @@ Snake::Snake(int xPos, int yPos)
     m_head = new SnakeBody(m_tail, m_forward);
 }
 
+Snake::~Snake()
+{
+    for (auto it = m_tail; it != m_head;)
+    {
+        auto temp = it;
+        it = it->next();
+        delete temp;
+    }
+    delete m_head;
+}
+
 void Snake::move()
 {
     // New head
@@ -118,6 +129,9 @@ Vector2 Snake::headPosition()
 void Snake::checkHeadCollision()
 {
     auto headPos = m_head->position();
+    if (!Display::instance().isPixelDrawn(headPos))
+        return;
+
     // Check for out of bounds
     if (headPos.x() < 0 || headPos.x() > constants::display::WIDTH || headPos.y() < 0 || headPos.y() > constants::display::HEIGHT)
     {
@@ -125,9 +139,12 @@ void Snake::checkHeadCollision()
         return;
     }
     // Check for snake collision
-    if (Display::instance().isPixelDrawn(headPos))
+    for (auto it = m_tail; it != m_head; it = it->next())
     {
-        m_crashed = true;
-        return;
+        if (headPos == it->position())
+        {
+            m_crashed = true;
+            return;
+        }
     }
 }

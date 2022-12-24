@@ -56,7 +56,6 @@ bool Display::isPixelDrawn(const Vector2& position)
 	return m_display.getPixel(position.x(), position.y());
 }
 
-
 Display::Display()
     : m_display(constants::display::WIDTH, constants::display::HEIGHT, &Wire)
 {
