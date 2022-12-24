@@ -1,6 +1,7 @@
 #include "SnakeBody.h"
-#include "Defines.h"
 #include "Arduino.h"
+#include "Defines.h"
+#include "Food.h"
 
 SnakeBody::SnakeBody(const Vector2 &position)
 {
@@ -78,6 +79,11 @@ void Snake::move()
     Display::instance().drawPixel(m_tail->position(), SH110X_BLACK);
 
     // Delete tail
+    if (m_digestingFood > 0)
+    {   // Skip if food was eaten
+        --m_digestingFood;
+        return;
+    }
     auto newTail = m_tail->next();
     delete m_tail;
     m_tail = newTail;
@@ -93,16 +99,27 @@ void Snake::turnRight()
     m_forward.rotateRight();
 }
 
+void Snake::eat(Food* food)
+{
+    m_digestingFood += food->size();
+    delete food;
+}
+
 bool Snake::hasCrashed()
 {
     return m_crashed;
+}
+
+Vector2 Snake::headPosition()
+{
+    return m_head->position();
 }
 
 void Snake::checkHeadCollision()
 {
     auto headPos = m_head->position();
     // Check for out of bounds
-    if (headPos.x() < 0 || headPos.x() > DISPLAY_WIDTH || headPos.y() < 0 || headPos.y() > DISPLAY_HEIGHT)
+    if (headPos.x() < 0 || headPos.x() > constants::display::WIDTH || headPos.y() < 0 || headPos.y() > constants::display::HEIGHT)
     {
         m_crashed = true;    
         return;

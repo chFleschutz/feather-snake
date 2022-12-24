@@ -1,17 +1,27 @@
-#ifndef _DEFINES_H_
-#define _DEFINES_H_
+#ifndef DEFINES_H
+#define DEFINES_H
 
-// Buttons for esp32-s3 (from OLED Screen)
-#define BUTTON_A 9
-#define BUTTON_B 6
-#define BUTTON_C 5
-
-// display settings
-#define DISPLAY_WIDTH 64
-#define DISPLAY_HEIGHT 128
-#define DISPLAY_I2C 0x3C
-
-// Game settings
-#define FRAME_DELAY 200 //< Micro-seconds between frames
+namespace constants
+{
+    // Button pins for esp32-s3
+    namespace button
+    {
+        constexpr int A = 9;
+        constexpr int B = 6;
+        constexpr int C = 5;
+    }
+    // OLED screen 
+    namespace display
+    {
+        constexpr int WIDTH  = 62;
+        constexpr int HEIGHT = 128;
+        constexpr int I2C    = 0x3C;
+    }
+    // Game settings
+    namespace game
+    {
+        constexpr int FRAME_DELAY = 200;    //< Micro-seconds between frames
+    }
+}
 
 #endif

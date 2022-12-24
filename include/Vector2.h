@@ -1,5 +1,5 @@
-#ifndef _VECTOR2_H_
-#define _VECTOR2_H_
+#ifndef VECTOR2_H
+#define VECTOR2_H
 
 class Vector2
 {
@@ -10,6 +10,7 @@ public:
 
     Vector2& operator=(const Vector2& other);
     bool operator==(const Vector2& other) const;
+    bool operator!=(const Vector2& other) const;
     Vector2 operator+(const Vector2& other) const;
 
     int x() const { return m_x; } 

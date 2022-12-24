@@ -1,5 +1,5 @@
-#ifndef _RENDERER_H_
-#define _RENDERER_H_
+#ifndef DISPLAY_H
+#define DISPLAY_H
 
 #include <Wire.h>
 #include <Adafruit_GFX.h>
@@ -24,6 +24,8 @@ public:
     
     void display();
     void clear();
+
+    bool isPixelDrawn(const Vector2& position);
 
 private:
     Display();

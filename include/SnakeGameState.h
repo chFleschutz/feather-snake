@@ -1,58 +1,58 @@
-#ifndef _SNAKEGAMESTATE_H_
-#define _SNAKEGAMESTATE_H_
+#ifndef SNAKEGAMESTATE_H
+#define SNAKEGAMESTATE_H
 
 #include "Defines.h"
 #include "SnakeBody.h"
 #include "Display.h"
+#include "Food.h"
+
+class SnakeGame;
 
 class SnakeGameState
 {
 public:
-    SnakeGameState();
-
-    bool shouldChange();
+    SnakeGameState(SnakeGame* game);
 
     virtual void update() = 0;
-    virtual SnakeGameState* transitionToNextState() = 0;
 
 protected:
-    void changeState();
+    void changeState(SnakeGameState* newState);
 
-private:
-    bool m_shouldChange = false;
+    SnakeGame* m_game;
 };
 
 
 class MainMenuState : public SnakeGameState
 {
 public:
-    MainMenuState();
+    MainMenuState(SnakeGame* game);
 
 	void update() override;
-	SnakeGameState* transitionToNextState() override;
 };
 
 
 class GameLoopState : public SnakeGameState
 {
 public:
-    GameLoopState();
+    GameLoopState(SnakeGame* game);
 
 	void update() override;
-	SnakeGameState* transitionToNextState() override;
 
 private:
+    void moveSnake();
+    void feedSnake();
+
     Snake m_snake;
+    FoodProvider m_foodProvider;
 };
 
 
 class GameOverState : public SnakeGameState
 {
 public: 
-    GameOverState();
+    GameOverState(SnakeGame* game);
 
 	void update() override;
-	SnakeGameState* transitionToNextState() override;
 };
 
 #endif

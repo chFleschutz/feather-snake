@@ -1,23 +1,19 @@
 #include "SnakeGameState.h"
 #include "Arduino.h"
+#include "SnakeGame.h"
 
-SnakeGameState::SnakeGameState()
+SnakeGameState::SnakeGameState(SnakeGame* game) : m_game(game)
 {
 }
 
-bool SnakeGameState::shouldChange()
+void SnakeGameState::changeState(SnakeGameState* newState)
 {
-	return m_shouldChange;
-}
-
-void SnakeGameState::changeState()
-{
-	m_shouldChange = true;
+	m_game->changeState(newState);
 }
 
 // MainMenuState ==================================================================
 
-MainMenuState::MainMenuState() 
+MainMenuState::MainMenuState(SnakeGame* game) : SnakeGameState(game)
 {
 	Display::instance().clear();
 	Display::instance().print("Main Menu", 2, 2, 2);
@@ -25,48 +21,56 @@ MainMenuState::MainMenuState()
 
 void MainMenuState::update()
 {
-	if (!digitalRead(BUTTON_A) || !digitalRead(BUTTON_B) || !digitalRead(BUTTON_C))
-		changeState();
-}
-
-SnakeGameState *MainMenuState::transitionToNextState()
-{
-	return new GameLoopState();
+	if (!digitalRead(constants::button::A) || !digitalRead(constants::button::B) || !digitalRead(constants::button::C))
+		changeState(new GameLoopState(m_game));
 }
 
 // GameLoopState ==================================================================
 
-GameLoopState::GameLoopState()
-	 : m_snake(20, 20)
+GameLoopState::GameLoopState(SnakeGame* game) : SnakeGameState(game), 
+	m_snake(20, 20)
 {
 	Display::instance().clear();
-	Display::instance().drawBox(Vector2(0, 0), DISPLAY_WIDTH, DISPLAY_HEIGHT);
+	Display::instance().drawBox(Vector2(0, 0), constants::display::WIDTH, constants::display::HEIGHT);
 }
 
 void GameLoopState::update()
 {
-	if (!digitalRead(BUTTON_B))
-		changeState();
+	if (!digitalRead(constants::button::B))
+		changeState(new GameOverState(m_game));
 
-	if (!digitalRead(BUTTON_A))
-		m_snake.turnRight();
-	if (!digitalRead(BUTTON_C))
-		m_snake.turnLeft();
+	moveSnake();
 
-	m_snake.move();
+	feedSnake();
 
+	// Check for gameover
 	if (m_snake.hasCrashed())
-		changeState();
+		changeState(new GameOverState(m_game));
 }
 
-SnakeGameState *GameLoopState::transitionToNextState()
+void GameLoopState::moveSnake()
 {
-	return new GameOverState();
+	// Change direction
+	if (!digitalRead(constants::button::A))
+		m_snake.turnRight();
+	if (!digitalRead(constants::button::C))
+		m_snake.turnLeft();
+
+	// Move snake forward
+	m_snake.move();
+}
+
+void GameLoopState::feedSnake()
+{
+	// Eat food 
+	auto food = m_foodProvider.takeFood(m_snake.headPosition());
+	if (food)
+		m_snake.eat(food);
 }
 
 // GameOverState ==================================================================
 
-GameOverState::GameOverState()
+GameOverState::GameOverState(SnakeGame* game) : SnakeGameState(game)
 {
 	Display::instance().print("Game Over", 2, 2, 2);
 	Display::instance().display();
@@ -74,11 +78,6 @@ GameOverState::GameOverState()
 
 void GameOverState::update()
 {
-	if (!digitalRead(BUTTON_A) || !digitalRead(BUTTON_B) || !digitalRead(BUTTON_C))
-		changeState();
-}
-
-SnakeGameState *GameOverState::transitionToNextState()
-{
-	return new MainMenuState();
+	if (!digitalRead(constants::button::A) || !digitalRead(constants::button::B) || !digitalRead(constants::button::C))
+		changeState(new MainMenuState(m_game));
 }

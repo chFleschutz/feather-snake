@@ -9,23 +9,18 @@ void SnakeGame::setup()
 {
     Display::instance().setup();
 
-    m_gameState = new MainMenuState();
+    m_gameState = new MainMenuState(this);
 }
 
 void SnakeGame::run()
 {
     m_gameState->update();
 
-    if (m_gameState->shouldChange())
-        changeState();
-
     Display::instance().display();
-    delay(FRAME_DELAY);
+    delay(constants::game::FRAME_DELAY);
 }
 
-void SnakeGame::changeState()
+void SnakeGame::changeState(SnakeGameState* newState)
 {
-    auto nextState = m_gameState->transitionToNextState();
-    delete m_gameState;
-    m_gameState = nextState;
+    m_gameState = newState;
 }

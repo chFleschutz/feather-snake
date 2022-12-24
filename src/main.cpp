@@ -10,9 +10,9 @@ void setup()
 {
 	Serial.begin(115200);
 	
-    pinMode(BUTTON_A, INPUT_PULLUP);
-	pinMode(BUTTON_B, INPUT_PULLUP);
-	pinMode(BUTTON_C, INPUT_PULLUP);
+    pinMode(constants::button::A, INPUT_PULLUP);
+	pinMode(constants::button::B, INPUT_PULLUP);
+	pinMode(constants::button::C, INPUT_PULLUP);
 
 	snake.setup();
 }

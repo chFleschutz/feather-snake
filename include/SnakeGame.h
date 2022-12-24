@@ -10,8 +10,8 @@ public:
 
     void run();
 
-private:
-    void changeState();
+    void changeState(SnakeGameState* newState);
 
+private:
     SnakeGameState* m_gameState;
 };

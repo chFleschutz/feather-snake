@@ -1,6 +1,8 @@
 #include "Vector2.h"
 #include "Display.h"
 
+class Food;
+
 class SnakeBody
 {
 public:
@@ -23,15 +25,21 @@ public:
     Snake(int xPos, int yPos);
 
     void move();
+
     void turnLeft();
     void turnRight();
+
+    void eat(Food* food);
+
     bool hasCrashed();
+    Vector2 headPosition();
 
 private:
     void checkHeadCollision();
 
     bool m_crashed = false;
     int m_snakeSize = 0;
+    int m_digestingFood = 0;
     Vector2 m_forward;
     SnakeBody* m_head;
     SnakeBody* m_tail;

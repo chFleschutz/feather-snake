@@ -9,7 +9,7 @@ Display& Display::instance()
 void Display::setup()
 {
 	delay(250);		// wait for the OLED to power up
-	m_display.begin(DISPLAY_I2C, true); 
+	m_display.begin(constants::display::I2C, true); 
 	m_display.display();
 	delay(1000);
 	m_display.clearDisplay();
@@ -58,6 +58,6 @@ bool Display::isPixelDrawn(const Vector2& position)
 
 
 Display::Display()
-    : m_display(DISPLAY_WIDTH, DISPLAY_HEIGHT, &Wire)
+    : m_display(constants::display::WIDTH, constants::display::HEIGHT, &Wire)
 {
 }
