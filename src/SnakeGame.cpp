@@ -15,6 +15,7 @@ void SnakeGame::setup()
 void SnakeGame::run()
 {
     m_gameState->update();
+    checkGameState();
 
     Display::instance().display();
     delay(constants::game::FRAME_DELAY);
@@ -22,5 +23,15 @@ void SnakeGame::run()
 
 void SnakeGame::changeState(SnakeGameState* newState)
 {
-    m_gameState = newState;
+    m_nextState = newState;
+}
+
+void SnakeGame::checkGameState()
+{
+    if (m_nextState)
+    {
+        delete m_gameState;
+        m_gameState = m_nextState;
+        m_nextState = nullptr;
+    }
 }

@@ -13,5 +13,8 @@ public:
     void changeState(SnakeGameState* newState);
 
 private:
+    void checkGameState();
+
     SnakeGameState* m_gameState;
+    SnakeGameState* m_nextState = nullptr;
 };
