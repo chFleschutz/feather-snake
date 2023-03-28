@@ -112,6 +112,9 @@ void Snake::turnRight()
 
 void Snake::eat(Food* food)
 {
+    if (!food)
+        return;
+
     m_digestingFood += food->size();
     delete food;
 }
@@ -128,6 +131,8 @@ Vector2 Snake::headPosition()
 
 void Snake::checkHeadCollision()
 {
+    // Todo: Not working properly Collision with border is not registered
+    
     auto headPos = m_head->position();
     if (!Display::instance().isPixelDrawn(headPos))
         return;

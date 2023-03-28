@@ -36,16 +36,11 @@ GameLoopState::GameLoopState(SnakeGame* game) : SnakeGameState(game),
 
 void GameLoopState::update()
 {
-	if (!digitalRead(constants::button::B))
-		changeState(new GameOverState(m_game));
-
 	moveSnake();
 
 	feedSnake();
 
-	// Check for gameover
-	if (m_snake.hasCrashed())
-		changeState(new GameOverState(m_game));
+	checkGameOver();
 }
 
 void GameLoopState::moveSnake()
@@ -62,10 +57,17 @@ void GameLoopState::moveSnake()
 
 void GameLoopState::feedSnake()
 {
-	// Eat food 
-	auto food = m_foodProvider.takeFood(m_snake.headPosition());
-	if (food)
-		m_snake.eat(food);
+	m_snake.eat(m_foodProvider.takeFood(m_snake.headPosition()));
+}
+
+void GameLoopState::checkGameOver()
+{
+	if (!m_snake.hasCrashed())
+		return;
+	if (digitalRead(constants::button::B))
+		return;
+	
+	changeState(new GameOverState(m_game));
 }
 
 // GameOverState ==================================================================

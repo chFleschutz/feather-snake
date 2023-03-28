@@ -2,10 +2,10 @@
 #include "Display.h"
 
 Food::Food(const Vector2& position, int size) :
-    // m_position(random(constants::display::WIDTH - 1), random(constants::display::HEIGHT - 1)),
+    m_position(random(constants::display::WIDTH - 1), random(constants::display::HEIGHT - 1)),
     m_size(size)
 {
-    // Display::instance().drawPifxel(m_position);
+    Display::instance().drawPixel(m_position);
 }
 
 int Food::size()

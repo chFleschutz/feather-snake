@@ -41,6 +41,7 @@ public:
 private:
     void moveSnake();
     void feedSnake();
+    void checkGameOver();
 
     Snake m_snake;
     FoodProvider m_foodProvider;
