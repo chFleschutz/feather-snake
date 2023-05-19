@@ -57,7 +57,8 @@ void GameLoopState::moveSnake()
 
 void GameLoopState::feedSnake()
 {
-	m_snake.eat(m_foodProvider.takeFood(m_snake.headPosition()));
+	if (auto food = m_foodProvider.takeFood(m_snake.headPosition()))
+		m_snake.eat(food);
 }
 
 void GameLoopState::checkGameOver()

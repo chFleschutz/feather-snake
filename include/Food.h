@@ -19,7 +19,12 @@ class FoodProvider
 public:
     FoodProvider();
 
+    // Returns a pointer to a food at position if one exists there
+    // Can be nullptr 
+    // Food has to be deleted afterwards
     Food* takeFood(const Vector2& position);
+
+    // Todo: refactor into returning a copy not a pointer to unsafe
 
 private:
     Food* m_food;
